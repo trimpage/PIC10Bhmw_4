@@ -1,6 +1,5 @@
 //main.cpp
 
-
 #include<iostream>
 #include<string>
 
