@@ -19,11 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\VectorString.cpp" />
+    <ClCompile Include="..\Company.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\VectorString.h" />
+    <ClInclude Include="..\Company.h" />
+    <ClInclude Include="..\Employee.h" />
+    <ClInclude Include="HourlyWorker.h" />
+    <ClInclude Include="SalariedWorker.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -77,7 +80,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>G:\githubs\trimpage\PIC10Bhmw_3;$(IncludePath)</IncludePath>
+    <IncludePath>G:\githubs\trimpage\PIC10Bhmw_4;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
