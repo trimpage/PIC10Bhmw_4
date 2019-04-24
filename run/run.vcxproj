@@ -20,13 +20,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Company.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="..\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Company.h" />
     <ClInclude Include="..\Employee.h" />
-    <ClInclude Include="HourlyWorker.h" />
-    <ClInclude Include="SalariedWorker.h" />
+    <ClInclude Include="..\HourlyWorker.h" />
+    <ClInclude Include="..\SalariedWorker.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

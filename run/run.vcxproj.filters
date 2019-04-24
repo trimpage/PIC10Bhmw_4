@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="..\Company.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Company.cpp">
+    <ClCompile Include="..\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,10 +29,10 @@
     <ClInclude Include="..\Employee.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SalariedWorker.h">
+    <ClInclude Include="..\HourlyWorker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HourlyWorker.h">
+    <ClInclude Include="..\SalariedWorker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
