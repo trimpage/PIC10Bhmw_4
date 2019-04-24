@@ -12,8 +12,8 @@ static int next_id;
 class Employee {
 public:
 	//constructors
-	Employee(std::string _name, std::string _email);
-	Employee(const std::string& fileName);
+	Employee(const std::string& _name, const std::string& _email);
+	Employee(std::ifstream& inputFile);
 
 	/**
 	prints employee data
@@ -35,6 +35,7 @@ public:
 	*/
 	virtual void save() const = 0;
 
+protected:
 	std::string name;
 	std::string email;
 	int id;

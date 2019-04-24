@@ -3,6 +3,7 @@
 #include "Company.h"
 #include "Employee.h"
 #include "HourlyWorker.h"
+#include "SalariedWorker.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -10,12 +11,11 @@
 
 //EMPLOYEE CLASS DEFINITIONS
 //define first employee constructor
-Employee::Employee(std::string _name, std::string _email) : name(_name), email(_email) {}
+Employee::Employee(const std::string& _name, const std::string& _email) : name(_name), email(_email) {}
 
-//define second employee constructor
-Employee::Employee(const std::string& fileName) {
+//define second employee constructor 
+Employee::Employee(std::ifstream& inputFile) {
 	//create file object and open it
-	std::ifstream inputFile;
 	inputFile.open(fileName);
 
 	//if file is unable to be opened, let user know, otherwise continue to parse data
@@ -61,12 +61,11 @@ void Employee::write_data() const {
 
 //HOURLYWORKER CLASS DEFINITIONS
 //define first hourly worker constructor
-HourlyWorker::HourlyWorker(std::string _name, std::string _email, int _rate) : Employee(_name, _email), rate(_rate), hours(0) {}
+HourlyWorker::HourlyWorker(const std::string& _name, const std::string& _email, const int& _rate) : Employee(_name, _email), rate(_rate), hours(0) {}
 
 //define second hourly worker constructor
-HourlyWorker::HourlyWorker(const std::string& fileName) {
+HourlyWorker::HourlyWorker(std::ifstream& inputFile) {
 	//create file object and open it
-	std::ifstream inputFile;
 	inputFile.open(fileName);
 
 	//if file is unable to be opened, let user know, otherwise continue to parse data
@@ -101,4 +100,51 @@ void HourlyWorker::set_hours(int _hours) {
 void HourlyWorker::print_pay() const {
 	int amount = rate * hours;
 	std::cout << name << " receives $" << amount << '\n';
+}
+
+//hourly worker save override
+void HourlyWorker::save() const {
+
+}
+
+//SALARIEDWORKER CLASS DEFINITIONS
+//define first hourly worker constructor
+SalariedWorker::SalariedWorker(const std::string& _name, const std::string& _email, const int& _rate) : Employee(_name, _email), rate(_rate), hours(0) {}
+
+//define second hourly worker constructor
+SalariedWorker::SalariedWorker(std::ifstream& inputFile) {
+	//create file object and open it
+	inputFile.open(fileName);
+
+	//if file is unable to be opened, let user know, otherwise continue to parse data
+	if (inputFile.fail()) {
+		std::cout << "File was unable to be opened.\n";
+	}
+	else {
+		//line variable to be read
+		std::string line;
+
+		//grab line string while not at end of file
+		while (!inputFile.eof()) {
+			getline(inputFile, line);
+		}
+
+		//create and use stream to parse line data, store first string as employee type
+		std::stringstream ss(line);
+		std::string employeeType;
+		std::string firstName;
+		std::string lastName;
+		ss >> employeeType >> firstName >> lastName >> email >> id >> salary;
+		name = firstName + ' ' + lastName;
+	}
+}
+
+//salaried worker print pay override
+void SalariedWorker::print_pay() const {
+	std::cout << name << " receives $" << salary << '\n';
+}
+
+//salaried worker save override
+void SalariedWorker::save() const {
+
 }

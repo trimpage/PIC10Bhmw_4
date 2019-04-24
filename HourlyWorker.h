@@ -8,8 +8,8 @@
 class HourlyWorker : public Employee {
 public:
 	//constructors
-	HourlyWorker(std::string _name, std::string _email, int _rate);
-	HourlyWorker(const std::string& fileName);
+	HourlyWorker(const std::string& _name, const std::string& _email, const int& _rate);
+	HourlyWorker(std::ifstream& inputFile);
 
 	/**
 	function to set hours worked
@@ -25,6 +25,10 @@ public:
 	/**
 	override of inherited function save, re-writes updated employee data to text file
 	*/
+	void save() const override;
+
+private:
+	//variables for hours and rate
 	int hours;
 	double rate;
 };
