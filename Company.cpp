@@ -9,6 +9,26 @@
 #include <fstream>
 #include <sstream>
 
+//COMPANY CLASS DEFINITIONS
+Company::Company() {
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //EMPLOYEE CLASS DEFINITIONS
 //define first employee constructor
 Employee::Employee(const std::string& _name, const std::string& _email) : name(_name), email(_email) {}
@@ -16,6 +36,7 @@ Employee::Employee(const std::string& _name, const std::string& _email) : name(_
 //define second employee constructor 
 Employee::Employee(std::ifstream& inputFile) {
 	//create file object and open it
+	std::string fileName = "employee" + (std::to_string(id)) + ".txt";
 	inputFile.open(fileName);
 
 	//if file is unable to be opened, let user know, otherwise continue to parse data
@@ -28,7 +49,7 @@ Employee::Employee(std::ifstream& inputFile) {
 
 		//grab line string while not at end of file
 		while (!inputFile.eof()) {
-			getline(inputFile, line);
+			std::getline(inputFile, line);
 		}
 
 		//create and use stream to parse line data, store first string as employee type
@@ -66,6 +87,7 @@ HourlyWorker::HourlyWorker(const std::string& _name, const std::string& _email, 
 //define second hourly worker constructor
 HourlyWorker::HourlyWorker(std::ifstream& inputFile) {
 	//create file object and open it
+	std::string fileName = "employee" + (std::to_string(id)) + ".txt";
 	inputFile.open(fileName);
 
 	//if file is unable to be opened, let user know, otherwise continue to parse data
@@ -78,7 +100,7 @@ HourlyWorker::HourlyWorker(std::ifstream& inputFile) {
 
 		//grab line string while not at end of file
 		while (!inputFile.eof()) {
-			getline(inputFile, line);
+			std::getline(inputFile, line);
 		}
 
 		//create and use stream to parse line data, store first string as employee type
@@ -109,11 +131,12 @@ void HourlyWorker::save() const {
 
 //SALARIEDWORKER CLASS DEFINITIONS
 //define first hourly worker constructor
-SalariedWorker::SalariedWorker(const std::string& _name, const std::string& _email, const int& _rate) : Employee(_name, _email), rate(_rate), hours(0) {}
+SalariedWorker::SalariedWorker(const std::string& _name, const std::string& _email, const int& _salary) : Employee(_name, _email), salary(_salary) {}
 
 //define second hourly worker constructor
 SalariedWorker::SalariedWorker(std::ifstream& inputFile) {
 	//create file object and open it
+	std::string fileName = "employee" + (std::to_string(id)) + ".txt";
 	inputFile.open(fileName);
 
 	//if file is unable to be opened, let user know, otherwise continue to parse data
@@ -126,7 +149,7 @@ SalariedWorker::SalariedWorker(std::ifstream& inputFile) {
 
 		//grab line string while not at end of file
 		while (!inputFile.eof()) {
-			getline(inputFile, line);
+			std::getline(inputFile, line);
 		}
 
 		//create and use stream to parse line data, store first string as employee type
