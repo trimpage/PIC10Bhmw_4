@@ -7,6 +7,7 @@
 #include "HourlyWorker.h"
 #include <string>
 #include <vector>
+#include <memory>
 
 class Company {
 public:

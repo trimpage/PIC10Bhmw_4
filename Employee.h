@@ -7,8 +7,6 @@
 #include <fstream>
 #include <sstream>
 
-static int next_id;
-
 class Employee {
 public:
 	//constructors
@@ -39,6 +37,7 @@ protected:
 	std::string name;
 	std::string email;
 	int id;
+	static int next_id;
 };
 
 #endif
