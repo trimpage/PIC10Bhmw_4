@@ -9,6 +9,51 @@
 #include <fstream>
 #include <sstream>
 
+//FREE FUNCTION DEFINITIONS
+//find next id function
+int find_next_id() {
+	//next id variable to return
+	int _next_id = 0;
+
+	//for loop to iterate through employee files
+	for (size_t i = 0; i < SIZE_MAX; ++i) {
+		//construct file name for each id
+		std::string fileName = "employee";
+		fileName += std::to_string(i);
+		fileName += ".txt";
+
+		//create ifstream and attempt to open file
+		std::ifstream file;
+		file.open(fileName);
+
+		//if fails to open, return next id
+		if (file.fail()) {
+			_next_id = static_cast<int>(i);
+			break;
+		}
+		//else continue
+		else {
+			continue;
+		}
+	}
+
+	return _next_id;
+}
+
+//run events function
+void run_events() {
+
+
+
+
+
+
+
+
+
+
+}
+
 //COMPANY CLASS DEFINITIONS
 //define company default constructor
 Company::Company() {
@@ -17,7 +62,7 @@ Company::Company() {
 		//create file name for individual employees
 		std::ifstream inputFile;
 		std::string fileName = "employee" + std::to_string(static_cast<int>(i)) + ".txt";
-
+		
 		//open file
 		inputFile.open(fileName);
 
@@ -92,25 +137,101 @@ void Company::do_hours() {
 			hwPointer->save();
 
 		}
+		//else continue
 		else {
-			//do nothing
+			continue;
 		}
 	}
 }
 
+//company print payroll function
+void Company::print_payroll() {
+	//for loop to iterate through employee vector
+	for (size_t i = 0; i < employees.size(); ++i) {
+		employees[i]->print_pay();
+	}
+}
 
+//company create salaried worker function
+void Company::create_salaried() {
+	//prompt user for name and get input
+	std::string name;
+	std::cout << "Enter name: ";
+	getline(std::cin, name);
 
+	//prompt user for email and get input
+	std::string email;
+	std::cout << "Enter email: ";
+	getline(std::cin, email);
 
+	//prompt user for salary and get input
+	int salary;
+	std::cout << "Enter salary: ";
+	std::cin >> salary;
+	
+	//create worker with inputted values and push back to employees
+	SalariedWorker employee = SalariedWorker(name, email, salary);
+	employee.save();
+	auto employeePointer = std::make_shared<SalariedWorker>(employee);
+	employees.push_back(employeePointer);
+}
 
+//company create hourly worker function
+void Company::create_hourly() {
+	//prompt user for name and get input
+	std::string name;
+	std::cout << "Enter name: ";
+	getline(std::cin, name);
 
+	//prompt user for email and get input
+	std::string email;
+	std::cout << "Enter email: ";
+	getline(std::cin, email);
 
+	//prompt user for salary and get input
+	int rate;
+	std::cout << "Enter hourly rate: ";
+	std::cin >> rate;
 
+	//create worker with inputted values and push back to employees
+	HourlyWorker employee = HourlyWorker(name, email, rate);
+	employee.save();
+	auto employeePointer = std::make_shared<HourlyWorker>(employee);
+	employees.push_back(employeePointer);
+}
 
+//company create employee function
+void Company::create_employee() {
+	//ask user what kind of employee to make
+	char response;
+	std::cout << "What type of employee?\n S - Salaried\n H - Hourly\n Abort (all other inputs)? ";
+	std::cin >> response;
+	std::cout << '\n';
 
+	//if response is S, create salaried employee
+	if (response == 'S') {
+		create_salaried();
+	}
+	//else if H, create hourly employee
+	else if (response == 'H') {
+		create_hourly();
+	}
+	//else abort
+	else {
+		std::cout << "Creation aborted.\n";
+		return;
+	}
+}
 
 //EMPLOYEE CLASS DEFINITIONS
+//set next id
+int Employee::next_id = find_next_id();
+
 //define first employee constructor
-Employee::Employee(const std::string& _name, const std::string& _email) : name(_name), email(_email) {}
+Employee::Employee(std::string _name, std::string _email) : name(std::move(_name)), email(std::move(_email)), id(next_id) {
+	//increment next id
+	++next_id;
+}
 
 //define second employee constructor 
 Employee::Employee(std::ifstream& inputFile) {
@@ -136,7 +257,7 @@ void Employee::print() const {
 }
 
 //employee get name function
-std::string Employee::get_name() const {
+const std::string& Employee::get_name() const {
 	return name;
 }
 
@@ -153,10 +274,25 @@ void Employee::write_data() const {
 	outputFile << name << '\t' << email << 't' << id << '\n';
 }
 
+//employee get email function
+const std::string& Employee::get_email() const {
+	return email;
+}
+
+//employee get id function
+const int& Employee::get_id() const {
+	return id;
+}
+
+//employee set next id function
+void Employee::set_next_id(const int& _id) {
+	next_id = _id;
+}
+
 //HOURLYWORKER CLASS DEFINITIONS
 //define first hourly worker constructor
-HourlyWorker::HourlyWorker(const std::string& _name, const std::string& _email, const int& _rate) 
-	: Employee(_name, _email), rate(_rate), hours(0) {}
+HourlyWorker::HourlyWorker(std::string _name, std::string _email, const int& _rate) 
+	: Employee(std::move(_name), std::move(_email)), rate(_rate), hours(0) {}
 
 //define second hourly worker constructor
 HourlyWorker::HourlyWorker(std::ifstream& inputFile) : Employee(inputFile) {
@@ -178,6 +314,8 @@ HourlyWorker::HourlyWorker(std::ifstream& inputFile) : Employee(inputFile) {
 	std::string employeeType;
 	std::string firstName;
 	std::string lastName;
+	std::string email;
+	std::string id;
 	ss >> employeeType >> firstName >> lastName >> email >> id >> hours >> rate;
 }
 
@@ -189,27 +327,28 @@ void HourlyWorker::set_hours(int _hours) {
 //hourly worker print pay override
 void HourlyWorker::print_pay() const {
 	int amount = rate * hours;
-	std::cout << name << " receives $" << amount << '\n';
+	std::cout << get_name() << " receives $" << amount << '\n';
 }
 
 //hourly worker save override
 void HourlyWorker::save() const {
 	//construct file name using employee id
+	int _id = get_id();
 	std::string fileName = "employee";
-	fileName += std::to_string(id);
+	fileName += std::to_string(_id);
 	fileName += ".txt";
 
 	//create file and output employee data to it
 	std::ofstream outputFile;
 	outputFile.open(fileName);
-	outputFile << "hourly\t" << name << '\t' << email << '\t' << id << '\t'
+	outputFile << "hourly\t" << get_name() << '\t' << get_email() << '\t' << _id << '\t'
 		<< hours << '\t' << rate;
 }
 
 //SALARIEDWORKER CLASS DEFINITIONS
 //define first hourly worker constructor
-SalariedWorker::SalariedWorker(const std::string& _name, const std::string& _email, const int& _salary) 
-	: Employee(_name, _email), salary(_salary) {}
+SalariedWorker::SalariedWorker(std::string _name, std::string _email, const int& _salary) 
+	: Employee(std::move(_name), std::move(_email)), salary(_salary) {}
 
 //define second hourly worker constructor
 SalariedWorker::SalariedWorker(std::ifstream& inputFile) : Employee(inputFile) {
@@ -231,23 +370,26 @@ SalariedWorker::SalariedWorker(std::ifstream& inputFile) : Employee(inputFile) {
 	std::string employeeType;
 	std::string firstName;
 	std::string lastName;
+	std::string email;
+	std::string id;
 	ss >> employeeType >> firstName >> lastName >> email >> id >> salary;
 }
 
 //salaried worker print pay override
 void SalariedWorker::print_pay() const {
-	std::cout << name << " receives $" << salary << '\n';
+	std::cout << get_name() << " receives $" << salary << '\n';
 }
 
 //salaried worker save override
 void SalariedWorker::save() const {
 	//construct file name using employee id
+	int _id = get_id();
 	std::string fileName = "employee";
-	fileName += std::to_string(id);
+	fileName += std::to_string(_id);
 	fileName += ".txt";
 
 	//create file and output employee data to it
 	std::ofstream outputFile;
 	outputFile.open(fileName);
-	outputFile << "salaried\t" << name << '\t' << email << 't' << id << '\t' << salary;
+	outputFile << "salaried\t" << get_name() << '\t' << get_email() << 't' << _id << '\t' << salary;
 }

@@ -10,7 +10,7 @@
 class Employee {
 public:
 	//constructors
-	Employee(const std::string& _name, const std::string& _email);
+	Employee(std::string _name, std::string _email);
 	Employee(std::ifstream& inputFile);
 
 	/**
@@ -22,7 +22,7 @@ public:
 	function to get name of employee
 	@return: returns employee name
 	*/
-	std::string get_name() const;
+	const std::string& get_name() const;
 
 	/**
 	writes employee data to a file named after their ID
@@ -39,7 +39,35 @@ public:
 	*/
 	virtual void save() const = 0;
 
+	//virtual destructor
+	virtual ~Employee() = default;
+
+	//re-enable move and copy constructors and assignments
+	Employee(Employee&&) noexcept = default;
+	Employee& operator = (Employee&&) noexcept = default;
+	Employee(const Employee&) = default;
+	Employee& operator = (const Employee&) = default;
+
 protected:
+	/**
+	function to get email of employee
+	@return: returns employee email
+	*/
+	const std::string& get_email() const;
+
+	/**
+	function to get id of employee
+	@return: returns employee id
+	*/
+	const int& get_id() const;
+
+	/**
+	function to set next id
+	@param _id: id to be set
+	*/
+	static void set_next_id(const int& _id);
+
+private:
 	std::string name;
 	std::string email;
 	int id;

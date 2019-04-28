@@ -24,6 +24,26 @@ public:
 	*/
 	void do_hours();
 
+	/**
+	print payroll function to print pay for all workers
+	*/
+	void print_payroll();
+
+	/**
+	create salaried worker function
+	*/
+	void create_salaried();
+
+	/**
+	create hourly worker function
+	*/
+	void create_hourly();
+
+	/**
+	creeate employee function
+	*/
+	void create_employee();
+
 private:
 	//member variable to store pointers to employees
 	std::vector<std::shared_ptr<Employee>> employees;

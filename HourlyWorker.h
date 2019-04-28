@@ -5,10 +5,10 @@
 #include <string>
 #include "Employee.h"
 
-class HourlyWorker : public Employee {
+class HourlyWorker final : public Employee {
 public:
 	//constructors
-	HourlyWorker(const std::string& _name, const std::string& _email, const int& _rate);
+	HourlyWorker(std::string _name, std::string _email, const int& _rate);
 	HourlyWorker(std::ifstream& inputFile);
 
 	/**
