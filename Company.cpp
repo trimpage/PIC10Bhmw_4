@@ -31,27 +31,60 @@ int find_next_id() {
 			_next_id = static_cast<int>(i);
 			break;
 		}
-		//else continue
+		//else, close and continue
 		else {
+			file.close();
 			continue;
 		}
 	}
-
 	return _next_id;
 }
 
 //run events function
 void run_events() {
+	//response variable
+	char response = 'C';
 
+	//create company object
+	Company company = Company();
 
+	//while response is valid, run loop
+	while ((response == 'C') || (response == 'D') || (response == 'H') || (response == 'P')) {
+		//ask user what to do and get input
+		std::cout << "What would you like to do?\n"
+			<< "C - Create Employee\n"
+			<< "D - Display Current Directory\n"
+			<< "H - Set Hours\n"
+			<< "P - Print Payroll\n"
+			<< "Quit (all other inputs)? ";
+		std::cin >> response;
+		std::cout << '\n';
 
-
-
-
-
-
-
-
+		//if response is C
+		if (response == 'C') {
+			//call create employee
+			company.create_employee();
+		}
+		//else if D
+		else if (response == 'D') {
+			//call print directory
+			company.print_directory();
+		}
+		//else if H
+		else if (response == 'H') {
+			//call do hours
+			company.do_hours();
+		}
+		//else if P
+		else if (response == 'P') {
+			//call print payroll
+			company.print_payroll();
+		}
+		//otherwise abort
+		else {
+			break;
+		}
+	}
 }
 
 //COMPANY CLASS DEFINITIONS
@@ -83,6 +116,9 @@ Company::Company() {
 				//create pointer to employee and push back to employees vector
 				auto employeePointer = std::make_shared<SalariedWorker>(employee);
 				employees.push_back(employeePointer);
+
+				//close file
+				inputFile.close();
 			}
 			//else, if hourly type
 			else if (employeeType == "hourly") {
@@ -92,6 +128,9 @@ Company::Company() {
 				//create pointer to employee and push back to employees vector
 				auto employeePointer = std::make_shared<HourlyWorker>(employee);
 				employees.push_back(employeePointer);
+
+				//close file
+				inputFile.close();
 			}
 			//increment i for while loop
 			++i;
@@ -150,6 +189,8 @@ void Company::print_payroll() {
 	for (size_t i = 0; i < employees.size(); ++i) {
 		employees[i]->print_pay();
 	}
+	//newline
+	std::cout << '\n';
 }
 
 //company create salaried worker function
@@ -166,8 +207,9 @@ void Company::create_salaried() {
 
 	//prompt user for salary and get input
 	int salary;
-	std::cout << "Enter salary: ";
+	std::cout << "Enter salary: $";
 	std::cin >> salary;
+	std::cout << '\n';
 	
 	//create worker with inputted values and push back to employees
 	SalariedWorker employee = SalariedWorker(name, email, salary);
@@ -190,8 +232,9 @@ void Company::create_hourly() {
 
 	//prompt user for salary and get input
 	int rate;
-	std::cout << "Enter hourly rate: ";
+	std::cout << "Enter hourly rate: $";
 	std::cin >> rate;
+	std::cout << '\n';
 
 	//create worker with inputted values and push back to employees
 	HourlyWorker employee = HourlyWorker(name, email, rate);
@@ -206,6 +249,9 @@ void Company::create_employee() {
 	char response;
 	std::cout << "What type of employee?\n S - Salaried\n H - Hourly\n Abort (all other inputs)? ";
 	std::cin >> response;
+
+	//ignore response from buffer and create new line
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	std::cout << '\n';
 
 	//if response is S, create salaried employee
@@ -218,7 +264,7 @@ void Company::create_employee() {
 	}
 	//else abort
 	else {
-		std::cout << "Creation aborted.\n";
+		std::cout << "Creation aborted.\n\n";
 		return;
 	}
 }
@@ -317,6 +363,9 @@ HourlyWorker::HourlyWorker(std::ifstream& inputFile) : Employee(inputFile) {
 	std::string email;
 	std::string id;
 	ss >> employeeType >> firstName >> lastName >> email >> id >> hours >> rate;
+
+	//close file
+	inputFile.close();
 }
 
 //hourly worker set hours function
@@ -343,6 +392,9 @@ void HourlyWorker::save() const {
 	outputFile.open(fileName);
 	outputFile << "hourly\t" << get_name() << '\t' << get_email() << '\t' << _id << '\t'
 		<< hours << '\t' << rate;
+
+	//close file
+	outputFile.close();
 }
 
 //SALARIEDWORKER CLASS DEFINITIONS
@@ -373,6 +425,9 @@ SalariedWorker::SalariedWorker(std::ifstream& inputFile) : Employee(inputFile) {
 	std::string email;
 	std::string id;
 	ss >> employeeType >> firstName >> lastName >> email >> id >> salary;
+
+	//close file
+	inputFile.close();
 }
 
 //salaried worker print pay override
@@ -391,5 +446,8 @@ void SalariedWorker::save() const {
 	//create file and output employee data to it
 	std::ofstream outputFile;
 	outputFile.open(fileName);
-	outputFile << "salaried\t" << get_name() << '\t' << get_email() << 't' << _id << '\t' << salary;
+	outputFile << "salaried\t" << get_name() << '\t' << get_email() << '\t' << _id << '\t' << salary;
+
+	//close file
+	outputFile.close();
 }

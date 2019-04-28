@@ -16,9 +16,9 @@ run events function to prompt user for input and proceed accordingly
 void run_events();
 
 int main() {
+	//run events
 	run_events();
-	std::cin.get();
-	
+
 	return 0;
 }
 

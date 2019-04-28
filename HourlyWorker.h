@@ -20,12 +20,12 @@ public:
 	/**
 	override of inherited function print_pay, prints amount of payment for worker
 	*/
-	void print_pay() const override;
+	void print_pay() const final;
 
 	/**
 	override of inherited function save, re-writes updated employee data to text file
 	*/
-	void save() const override;
+	void save() const final;
 
 private:
 	//variables for hours and rate

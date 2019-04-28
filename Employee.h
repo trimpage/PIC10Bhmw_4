@@ -13,13 +13,22 @@ public:
 	Employee(std::string _name, std::string _email);
 	Employee(std::ifstream& inputFile);
 
+	//virtual destructor
+	virtual ~Employee() = default;
+
+	//re-enable move and copy constructors and assignments
+	Employee(Employee&&) noexcept = default;
+	Employee& operator = (Employee&&) noexcept = default;
+	Employee(const Employee&) = default;
+	Employee& operator = (const Employee&) = default;
+
 	/**
 	prints employee data
 	*/
 	void print() const;
 
 	/**
-	function to get name of employee
+	function to get name of employee, must be public so company can call it
 	@return: returns employee name
 	*/
 	const std::string& get_name() const;
@@ -38,15 +47,6 @@ public:
 	pure virtual function, will be used in derived classes to update employee file with new data
 	*/
 	virtual void save() const = 0;
-
-	//virtual destructor
-	virtual ~Employee() = default;
-
-	//re-enable move and copy constructors and assignments
-	Employee(Employee&&) noexcept = default;
-	Employee& operator = (Employee&&) noexcept = default;
-	Employee(const Employee&) = default;
-	Employee& operator = (const Employee&) = default;
 
 protected:
 	/**
