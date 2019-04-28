@@ -19,6 +19,12 @@ public:
 	void print() const;
 
 	/**
+	function to get name of employee
+	@return: returns employee name
+	*/
+	std::string get_name() const;
+
+	/**
 	writes employee data to a file named after their ID
 	*/
 	virtual void write_data() const;

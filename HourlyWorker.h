@@ -30,7 +30,7 @@ public:
 private:
 	//variables for hours and rate
 	int hours;
-	double rate;
+	int rate;
 };
 
 #endif	
